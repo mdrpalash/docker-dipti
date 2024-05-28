@@ -1,0 +1,46 @@
+Install using the apt repository
+
+1. Set up Docker's apt repository.
+
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+#if not working above GPG Key:
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Or if not working
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt-get update
+
+2. Install the Docker packages.
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+3. Verify that the Docker Engine installation is successful by running the hello-world image.
+
+sudo docker run hello-world
+
+This command downloads a test image and runs it in a container. If Docker is installed correctly, you will see a message indicating that the installation is successful.
+
+
+Optional Steps:
+1. Manage Docker as a Non-Root User
+By default, Docker requires root privileges. You can avoid using sudo with Docker commands by adding your user to the docker group:
+sudo usermod -aG docker $USER
+Log out and log back in so that your group membership is re-evaluated.
+
+2. Enable Docker to Start on Boot
+To ensure Docker starts on boot, use the following command:
+
+sudo systemctl enable docker
+
